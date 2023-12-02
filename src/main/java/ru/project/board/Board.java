@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Board {
-    private int weight;
-    private int height;
-    private Map<Key,Integer> board = new HashMap<>();
+    protected int width;
+    protected int height;
+    protected Map<Key,Integer> board = new HashMap<>();
 
-    public Board(int weight, int height) {
-        this.weight = weight;
+    public Board(int width, int height) {
+        this.width = width;
         this.height = height;
     }
 
