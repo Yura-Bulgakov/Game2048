@@ -2,41 +2,35 @@ package ru.project.board;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SquareBoard extends Board {
-    private final int size;
 
     public SquareBoard(int size) {
         super(size, size);
-        this.size = size;
     }
 
     @Override
     public void fillBoard(List<Integer> list) {
-        Random random = new Random();
-        for (Integer element : list) {
-            this.board.put(new Key(
-                            random.nextInt(this.size - 1), this.size - 1),
-                    element);
+        List<Key> availableKeys = availableSpace();
+        Collections.shuffle(availableKeys);
+        for (int i = 0; i < availableKeys.size() && i < list.size(); i++) {
+            addItem(availableKeys.get(i), list.get(i));
         }
     }
 
     @Override
     public List<Key> availableSpace() {
-        return this.board.keySet().stream()
-                .filter(Objects::isNull)
+        return this.board.entrySet().stream()
+                .filter(x -> x.getValue() == null)
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public void addItem(Key key, Integer value) {
-        this.board.put(key, value);
     }
 
     @Override
     public Key getKey(int i, int j) {
         return this.board.keySet().stream()
-                .filter(key -> key.equals(new Key(i, j)))
+                .filter(key -> key.getI() == i && key.getJ() == j)
                 .findAny().orElseThrow();
     }
 
@@ -48,14 +42,14 @@ public class SquareBoard extends Board {
     @Override
     public List<Key> getColumn(int j) {
         return this.board.keySet().stream()
-                .filter(column -> column.getJ() == j)
+                .filter(key -> key.getJ() == j)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<Key> getRow(int i) {
         return this.board.keySet().stream()
-                .filter(row -> row.getI() == i)
+                .filter(key -> key.getI() == i)
                 .collect(Collectors.toList());
     }
 

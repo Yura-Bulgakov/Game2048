@@ -7,18 +7,25 @@ import java.util.Map;
 public abstract class Board {
     protected int width;
     protected int height;
-    protected Map<Key,Integer> board = new HashMap<>();
+    protected Map<Key, Integer> board = new HashMap<>();
 
-    public Board(int width, int height) {
+    protected Board(int width, int height) {
         this.width = width;
         this.height = height;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                addItem(new Key(i, j), null);
+            }
+        }
     }
 
     public abstract void fillBoard(List<Integer> list);
 
     public abstract List<Key> availableSpace();
 
-    public abstract void addItem(Key key,Integer value);
+    public void addItem(Key key, Integer value){
+        this.board.put(key, value);
+    }
 
     public abstract Key getKey(int i, int j);
 
