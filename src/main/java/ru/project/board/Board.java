@@ -1,9 +1,12 @@
 package ru.project.board;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@EqualsAndHashCode
 public abstract class Board {
     protected int width;
     protected int height;
@@ -19,13 +22,19 @@ public abstract class Board {
         }
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public abstract void fillBoard(List<Integer> list);
 
     public abstract List<Key> availableSpace();
 
-    public void addItem(Key key, Integer value){
-        this.board.put(key, value);
-    }
+    public abstract void addItem(Key key, Integer value);
 
     public abstract Key getKey(int i, int j);
 

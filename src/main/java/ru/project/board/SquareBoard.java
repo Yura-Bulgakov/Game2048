@@ -1,8 +1,9 @@
 package ru.project.board;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SquareBoard extends Board {
 
@@ -12,8 +13,9 @@ public class SquareBoard extends Board {
 
     @Override
     public void fillBoard(List<Integer> list) {
-        List<Key> availableKeys = availableSpace();
-        Collections.shuffle(availableKeys);
+        List<Key> availableKeys = availableSpace().stream()
+                .sorted(Comparator.comparing(Key::getI))
+                .collect(Collectors.toList());
         for (int i = 0; i < availableKeys.size() && i < list.size(); i++) {
             addItem(availableKeys.get(i), list.get(i));
         }
@@ -28,10 +30,15 @@ public class SquareBoard extends Board {
     }
 
     @Override
+    public void addItem(Key key, Integer value) {
+        this.board.put(key, value);
+    }
+
+    @Override
     public Key getKey(int i, int j) {
         return this.board.keySet().stream()
                 .filter(key -> key.getI() == i && key.getJ() == j)
-                .findAny().orElseThrow();
+                .findAny().orElse(null);
     }
 
     @Override
@@ -43,6 +50,7 @@ public class SquareBoard extends Board {
     public List<Key> getColumn(int j) {
         return this.board.keySet().stream()
                 .filter(key -> key.getJ() == j)
+                .sorted(Comparator.comparing(Key::getI))
                 .collect(Collectors.toList());
     }
 
@@ -50,6 +58,7 @@ public class SquareBoard extends Board {
     public List<Key> getRow(int i) {
         return this.board.keySet().stream()
                 .filter(key -> key.getI() == i)
+                .sorted(Comparator.comparing(Key::getJ))
                 .collect(Collectors.toList());
     }
 
@@ -60,7 +69,9 @@ public class SquareBoard extends Board {
 
     @Override
     public List<Integer> getValues(List<Key> keys) {
-        return new ArrayList<Integer>(this.board.values());
+        return keys.stream()
+                .map(this::getValue)
+                .collect(Collectors.toList());
     }
 
 }
