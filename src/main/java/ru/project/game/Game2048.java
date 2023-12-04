@@ -11,6 +11,7 @@ public class Game2048 implements Game {
     private final GameHelper helper = new GameHelper();
     private final Board board;
     private final Random random = new Random();
+    private static final int INITIAL_COUNT = 2;
 
     public Game2048(Board board) {
         this.board = board;
@@ -18,7 +19,7 @@ public class Game2048 implements Game {
 
     @Override
     public void init() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < INITIAL_COUNT; i++) {
             addItem();
         }
     }
@@ -70,9 +71,9 @@ public class Game2048 implements Game {
         List<Key> keys = board.availableSpace();
         Collections.shuffle(keys);
         if (random.nextFloat() > 0.9) {
-            board.addItem(keys.get(1), 2);
+            board.addItem(keys.get(0), 4);
         } else {
-            board.addItem(keys.get(1), 4);
+            board.addItem(keys.get(0), 2);
         }
     }
 
@@ -102,7 +103,7 @@ public class Game2048 implements Game {
             for (int i = 0; i < newElements.size(); i++) {
                 Key key = new Key(i, j);
                 result = result || !Objects.equals(board.getValue(key), newElements.get(i));
-                board.addItem(new Key(i, j), newElements.get(i));
+                board.addItem(key, newElements.get(i));
             }
         }
         return result;
@@ -118,7 +119,7 @@ public class Game2048 implements Game {
             for (int i = 0; i < newElements.size(); i++) {
                 Key key = new Key(i, j);
                 result = result || !Objects.equals(board.getValue(key), newElements.get(i));
-                board.addItem(new Key(i, j), newElements.get(i));
+                board.addItem(key, newElements.get(i));
             }
         }
         return result;
