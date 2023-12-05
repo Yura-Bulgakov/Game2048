@@ -4,11 +4,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SquareBoard extends Board {
 
     public SquareBoard(int size) {
         super(size, size);
+    }
+
+    @Override
+    public List<List<Key>> getColumns() {
+        return IntStream.range(0, getWidth()).mapToObj(this::getColumn).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<List<Key>> getRows() {
+        return IntStream.range(0, getHeight()).mapToObj(this::getRow).collect(Collectors.toList());
     }
 
     @Override

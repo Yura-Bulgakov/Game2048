@@ -42,6 +42,10 @@ public abstract class Board {
         return Objects.hash(width, height, board);
     }
 
+    public abstract List<List<Key>> getColumns();
+
+    public abstract List<List<Key>> getRows();
+
     public abstract void fillBoard(List<Integer> list);
 
     public abstract List<Key> availableSpace();

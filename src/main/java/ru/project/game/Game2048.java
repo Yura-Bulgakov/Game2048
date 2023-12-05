@@ -7,12 +7,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class Game2048 implements Game {
+    private static final int INITIAL_COUNT = 2;
     private final GameHelper helper = new GameHelper();
     private final Board board;
     private final Random random = new Random();
-    private static final int INITIAL_COUNT = 2;
 
     public Game2048(Board board) {
         this.board = board;
@@ -30,19 +31,8 @@ public class Game2048 implements Game {
         if (board.hasValue(null)) {
             return true;
         }
-        for (int j = 0; j < board.getWidth(); j++) {
-            List<Key> columnKeys = board.getColumn(j);
-            if (hasEqualNeighbours(columnKeys)) {
-                return true;
-            }
-        }
-        for (int i = 0; i < board.getHeight(); i++) {
-            List<Key> rowKeys = board.getRow(i);
-            if (hasEqualNeighbours(rowKeys)) {
-                return true;
-            }
-        }
-        return false;
+        return Stream.concat(board.getColumns().stream(), board.getRows().stream())
+                .anyMatch(this::hasEqualNeighbours);
     }
 
     @Override
@@ -102,7 +92,8 @@ public class Game2048 implements Game {
      * (вертикальное, горизонтальное) и направлением (прямое, обратное).
      * Например, движение влево - это прямое движение по горизонтальной оси, движение вверх - это прямое движение по
      * вертикальной оси.
-     * @param axis ось
+     *
+     * @param axis      ось
      * @param isForward направление (true - прямое, false - обратное)
      * @return произошло движение (true - произошло, false - нет)
      */

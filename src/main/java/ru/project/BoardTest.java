@@ -2,7 +2,9 @@ package ru.project;
 
 import ru.project.board.Board;
 import ru.project.board.SquareBoard;
+
 import java.util.List;
+
 import static java.util.Arrays.asList;
 
 public class BoardTest {

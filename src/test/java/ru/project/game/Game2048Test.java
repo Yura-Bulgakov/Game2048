@@ -8,6 +8,7 @@ import ru.project.board.Key;
 import ru.project.board.SquareBoard;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 class Game2048Test {
@@ -46,17 +47,13 @@ class Game2048Test {
             }
         }
 
-        List<Testcase> testcases = Arrays.asList(
+        Stream.of(
                 new Testcase("1" , Arrays.asList(1,2,3,4), false),
                 new Testcase("2" , Arrays.asList(null,2,3,4), true),
                 new Testcase("3" , Arrays.asList(null,null,null,null), true),
                 new Testcase("4" , Arrays.asList(2,2,3,4), true),
                 new Testcase("5" , Arrays.asList(2,3,2,3), true)
-        );
-        for (Testcase test: testcases) {
-            test.run();
-        }
-
+        ).forEach(Testcase::run);
     }
 
     @Test
@@ -82,7 +79,7 @@ class Game2048Test {
             }
         }
 
-        List<Testcase> testcases = Arrays.asList(
+        Stream.of(
                 new Testcase("1" , Arrays.asList(2,2,3,4), Direction.UP, false),
                 new Testcase("2" , Arrays.asList(2,2,3,4), Direction.RIGHT, true),
                 new Testcase("3" , Arrays.asList(2,2,3,4), Direction.LEFT, true),
@@ -101,10 +98,7 @@ class Game2048Test {
                 new Testcase("16" , Arrays.asList(null,null,null,null), Direction.DOWN, false),
                 new Testcase("17" , Arrays.asList(null,null,null,null), Direction.LEFT, false),
                 new Testcase("18" , Arrays.asList(null,null,null,null), Direction.RIGHT, false)
-        );
-        for (var test: testcases) {
-            test.run();
-        }
+        ).forEach(Testcase::run);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ru.project;
 
 import ru.project.game.GameHelper;
+
 import static java.util.Arrays.asList;
 import static ru.project.BoardTest.assertEquals;
 
