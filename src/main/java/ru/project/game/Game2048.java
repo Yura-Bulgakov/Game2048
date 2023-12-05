@@ -2,6 +2,7 @@ package ru.project.game;
 
 import ru.project.board.Board;
 import ru.project.board.Key;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -51,16 +52,16 @@ public class Game2048 implements Game {
         }
         switch (direction) {
             case UP: {
-                return moveUp();
+                return moveImpl(Axis.VERTICAL, true);
             }
             case DOWN: {
-                return moveDown();
+                return moveImpl(Axis.VERTICAL, false);
             }
             case LEFT: {
-                return moveLeft();
+                return moveImpl(Axis.HORIZONTAL, true);
             }
             case RIGHT: {
-                return moveRight();
+                return moveImpl(Axis.HORIZONTAL, false);
             }
         }
         return false;
@@ -96,57 +97,29 @@ public class Game2048 implements Game {
         return false;
     }
 
-    private boolean moveUp() {
+    /**
+     * Позволяет двигать элементы по доске в зависимости от направления. Движение определяется осью
+     * (вертикальное, горизонтальное) и направлением (прямое, обратное).
+     * Например, движение влево - это прямое движение по горизонтальной оси, движение вверх - это прямое движение по
+     * вертикальной оси.
+     * @param axis ось
+     * @param isForward направление (true - прямое, false - обратное)
+     * @return произошло движение (true - произошло, false - нет)
+     */
+    private boolean moveImpl(Axis axis, boolean isForward) {
         boolean result = false;
-        for (int j = 0; j < board.getWidth(); j++) {
-            List<Integer> newElements = helper.moveAndMergeEqual(board.getValues(board.getColumn(j)));
-            for (int i = 0; i < newElements.size(); i++) {
-                Key key = new Key(i, j);
-                result = result || !Objects.equals(board.getValue(key), newElements.get(i));
-                board.addItem(key, newElements.get(i));
+        var firstDimensionSize = axis.equals(Axis.VERTICAL) ? board.getWidth() : board.getHeight();
+        for (int i = 0; i < firstDimensionSize; i++) {
+            List<Key> keys = axis.equals(Axis.VERTICAL) ? board.getColumn(i) : board.getRow(i);
+            if (!isForward) {
+                Collections.reverse(keys);
             }
-        }
-        return result;
-    }
-
-    private boolean moveDown() {
-        boolean result = false;
-        for (int j = 0; j < board.getWidth(); j++) {
-            List<Key> keys = board.getColumn(j);
-            Collections.reverse(keys);
             List<Integer> newElements = helper.moveAndMergeEqual(board.getValues(keys));
-            Collections.reverse(newElements);
-            for (int i = 0; i < newElements.size(); i++) {
-                Key key = new Key(i, j);
-                result = result || !Objects.equals(board.getValue(key), newElements.get(i));
-                board.addItem(key, newElements.get(i));
+            if (!isForward) {
+                Collections.reverse(newElements);
             }
-        }
-        return result;
-    }
-
-    private boolean moveLeft() {
-        boolean result = false;
-        for (int i = 0; i < board.getHeight(); i++) {
-            List<Integer> newElements = helper.moveAndMergeEqual(board.getValues(board.getRow(i)));
             for (int j = 0; j < newElements.size(); j++) {
-                Key key = new Key(i, j);
-                result = result || !Objects.equals(board.getValue(key), newElements.get(j));
-                board.addItem(key, newElements.get(j));
-            }
-        }
-        return result;
-    }
-
-    private boolean moveRight() {
-        boolean result = false;
-        for (int i = 0; i < board.getHeight(); i++) {
-            List<Key> keys = board.getRow(i);
-            Collections.reverse(keys);
-            List<Integer> newElements = helper.moveAndMergeEqual(board.getValues(keys));
-            Collections.reverse(newElements);
-            for (int j = 0; j < newElements.size(); j++) {
-                Key key = new Key(i, j);
+                var key = axis.equals(Axis.VERTICAL) ? new Key(j, i) : new Key(i, j);
                 result = result || !Objects.equals(board.getValue(key), newElements.get(j));
                 board.addItem(key, newElements.get(j));
             }

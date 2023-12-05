@@ -1,12 +1,11 @@
 package ru.project.board;
 
-import lombok.EqualsAndHashCode;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-@EqualsAndHashCode
+
 public abstract class Board {
     protected int width;
     protected int height;
@@ -28,6 +27,19 @@ public abstract class Board {
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board1 = (Board) o;
+        return width == board1.width && height == board1.height && Objects.equals(board, board1.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(width, height, board);
     }
 
     public abstract void fillBoard(List<Integer> list);

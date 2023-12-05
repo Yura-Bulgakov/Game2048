@@ -1,6 +1,5 @@
 package ru.project.game;
 
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,11 +27,17 @@ class Game2048Test {
 
     @Test
     void canMove() {
-        @AllArgsConstructor
+
         class Testcase{
-            String name;
-            List<Integer> inList;
-            boolean expectedResult;
+            final String name;
+            final List<Integer> inList;
+            final boolean expectedResult;
+
+            public Testcase(String name, List<Integer> inList, boolean expectedResult) {
+                this.name = name;
+                this.inList = inList;
+                this.expectedResult = expectedResult;
+            }
 
             void run(){
                 Game2048 game20481 = new Game2048(new SquareBoard(2));
@@ -56,12 +61,19 @@ class Game2048Test {
 
     @Test
     void move() {
-        @AllArgsConstructor
+
         class Testcase{
-            String name;
-            List<Integer> inList;
-            Direction direction;
-            boolean expectedResult;
+            final String name;
+            final List<Integer> inList;
+            final Direction direction;
+            final boolean expectedResult;
+
+            public Testcase(String name, List<Integer> inList, Direction direction, boolean expectedResult) {
+                this.name = name;
+                this.inList = inList;
+                this.direction = direction;
+                this.expectedResult = expectedResult;
+            }
 
             void run(){
                 Game2048 game20481 = new Game2048(new SquareBoard(2));
@@ -90,7 +102,7 @@ class Game2048Test {
                 new Testcase("17" , Arrays.asList(null,null,null,null), Direction.LEFT, false),
                 new Testcase("18" , Arrays.asList(null,null,null,null), Direction.RIGHT, false)
         );
-        for (Testcase test: testcases) {
+        for (var test: testcases) {
             test.run();
         }
     }

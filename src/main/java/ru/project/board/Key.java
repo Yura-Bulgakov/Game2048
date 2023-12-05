@@ -1,15 +1,34 @@
 package ru.project.board;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Objects;
 
-@EqualsAndHashCode
-@Getter
-@Setter
-@AllArgsConstructor
 public class Key {
-    private int i;
-    private int j;
+    private final int i;
+    private final int j;
+
+    public int getI() {
+        return i;
+    }
+
+    public int getJ() {
+        return j;
+    }
+    public Key(int i, int j) {
+        this.i = i;
+        this.j = j;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Key key = (Key) o;
+        return i == key.i && j == key.j;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(i, j);
+    }
+
 }

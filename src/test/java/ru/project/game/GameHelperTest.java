@@ -1,6 +1,5 @@
 package ru.project.game;
 
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,11 +16,16 @@ class GameHelperTest {
 
     @Test
     void moveAndMergeEqual() {
-        @AllArgsConstructor
         class Testcase {
-            String name;
-            List<Integer> inList;
-            List<Integer> expectedOut;
+            final String name;
+            final List<Integer> inList;
+            final List<Integer> expectedOut;
+
+            public Testcase(String name, List<Integer> inList, List<Integer> expectedOut) {
+                this.name = name;
+                this.inList = inList;
+                this.expectedOut = expectedOut;
+            }
 
             void run() {
                 Assertions.assertArrayEquals(expectedOut.toArray(), gameHelper.moveAndMergeEqual(inList).toArray(), name);
@@ -38,7 +42,7 @@ class GameHelperTest {
                 new Testcase("8", Arrays.asList(null, null, 2, 2), Arrays.asList(4, null, null, null))
         );
 
-        for (Testcase test: testcases) {
+        for (var test: testcases) {
             test.run();
         }
     }

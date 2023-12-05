@@ -7,15 +7,15 @@ public class GameHelper {
     public List<Integer> moveAndMergeEqual(List<Integer> list) {
         List<Integer> result = new ArrayList<>(list.size());
         boolean canMerge = false;
-        for (Integer integer : list) {
-            if (integer == null) {
+        for (var element : list) {
+            if (element == null) {
                 continue;
             }
-            if (result.isEmpty() || !integer.equals(result.get(result.size() - 1)) || !canMerge) {
-                result.add(integer);
+            if (result.isEmpty() || !element.equals(result.get(result.size() - 1)) || !canMerge) {
+                result.add(element);
                 canMerge = true;
             } else {
-                result.set(result.size() - 1, integer * 2);
+                result.set(result.size() - 1, element * 2);
                 canMerge = false;
             }
         }
