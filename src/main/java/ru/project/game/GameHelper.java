@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GameHelper {
     public List<Integer> moveAndMergeEqual(List<Integer> list) {
-        List<Integer> result = new ArrayList<>(list.size());
+        var result = new ArrayList<Integer>(list.size());
         boolean canMerge = false;
         for (var element : list) {
             if (element == null) {

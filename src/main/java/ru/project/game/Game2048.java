@@ -42,16 +42,16 @@ public class Game2048 implements Game {
         }
         switch (direction) {
             case UP: {
-                return moveImpl(Axis.VERTICAL, true);
+                return move(Axis.VERTICAL, true);
             }
             case DOWN: {
-                return moveImpl(Axis.VERTICAL, false);
+                return move(Axis.VERTICAL, false);
             }
             case LEFT: {
-                return moveImpl(Axis.HORIZONTAL, true);
+                return move(Axis.HORIZONTAL, true);
             }
             case RIGHT: {
-                return moveImpl(Axis.HORIZONTAL, false);
+                return move(Axis.HORIZONTAL, false);
             }
         }
         return false;
@@ -59,7 +59,7 @@ public class Game2048 implements Game {
 
     @Override
     public void addItem() {
-        List<Key> keys = board.availableSpace();
+        var keys = board.availableSpace();
         Collections.shuffle(keys);
         if (random.nextFloat() > 0.9) {
             board.addItem(keys.get(0), 4);
@@ -97,15 +97,15 @@ public class Game2048 implements Game {
      * @param isForward направление (true - прямое, false - обратное)
      * @return произошло движение (true - произошло, false - нет)
      */
-    private boolean moveImpl(Axis axis, boolean isForward) {
+    private boolean move(Axis axis, boolean isForward) {
         boolean result = false;
         var firstDimensionSize = axis.equals(Axis.VERTICAL) ? board.getWidth() : board.getHeight();
         for (int i = 0; i < firstDimensionSize; i++) {
-            List<Key> keys = axis.equals(Axis.VERTICAL) ? board.getColumn(i) : board.getRow(i);
+            var keys = axis.equals(Axis.VERTICAL) ? board.getColumn(i) : board.getRow(i);
             if (!isForward) {
                 Collections.reverse(keys);
             }
-            List<Integer> newElements = helper.moveAndMergeEqual(board.getValues(keys));
+            var newElements = helper.moveAndMergeEqual(board.getValues(keys));
             if (!isForward) {
                 Collections.reverse(newElements);
             }

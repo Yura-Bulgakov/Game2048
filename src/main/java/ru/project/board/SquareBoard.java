@@ -10,6 +10,11 @@ public class SquareBoard extends Board {
 
     public SquareBoard(int size) {
         super(size, size);
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                addItem(new Key(i, j), null);
+            }
+        }
     }
 
     @Override
@@ -24,7 +29,7 @@ public class SquareBoard extends Board {
 
     @Override
     public void fillBoard(List<Integer> list) {
-        List<Key> availableKeys = availableSpace().stream()
+        var availableKeys = availableSpace().stream()
                 .sorted(Comparator.comparing(Key::getI).thenComparing(Key::getJ))
                 .collect(Collectors.toList());
         for (int i = 0; i < availableKeys.size() && i < list.size(); i++) {

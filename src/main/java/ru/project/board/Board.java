@@ -14,11 +14,6 @@ public abstract class Board {
     protected Board(int width, int height) {
         this.width = width;
         this.height = height;
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                addItem(new Key(i, j), null);
-            }
-        }
     }
 
     public int getWidth() {
