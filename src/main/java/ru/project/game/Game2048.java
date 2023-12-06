@@ -2,6 +2,7 @@ package ru.project.game;
 
 import ru.project.board.Board;
 import ru.project.board.Key;
+import ru.project.board.SquareBoard;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,18 +10,22 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class Game2048 implements Game {
+public class Game2048 implements Game<Key, Integer> {
+    public static final int GAME_SIZE = 4;
+    private Board<Key, Integer> board = new SquareBoard<>(GAME_SIZE);
     private static final int INITIAL_COUNT = 2;
     private final GameHelper helper = new GameHelper();
-    private final Board board;
     private final Random random = new Random();
 
-    public Game2048(Board board) {
+    public Game2048(Board<Key, Integer> board) {
         this.board = board;
+    }
+    public Game2048() {
     }
 
     @Override
     public void init() {
+        board.clearBoard();
         for (int i = 0; i < INITIAL_COUNT; i++) {
             addItem();
         }
@@ -40,21 +45,29 @@ public class Game2048 implements Game {
         if (!canMove()) {
             return false;
         }
+        boolean result = false;
         switch (direction) {
             case UP: {
-                return move(Axis.VERTICAL, true);
+                result = move(Axis.VERTICAL, true);
+                break;
             }
             case DOWN: {
-                return move(Axis.VERTICAL, false);
+                result = move(Axis.VERTICAL, false);
+                break;
             }
             case LEFT: {
-                return move(Axis.HORIZONTAL, true);
+                result = move(Axis.HORIZONTAL, true);
+                break;
             }
             case RIGHT: {
-                return move(Axis.HORIZONTAL, false);
+                result = move(Axis.HORIZONTAL, false);
+                break;
             }
         }
-        return false;
+        if (result){
+            addItem();
+        }
+        return result;
     }
 
     @Override
@@ -69,7 +82,7 @@ public class Game2048 implements Game {
     }
 
     @Override
-    public Board getGameBoard() {
+    public Board<Key,Integer> getGameBoard() {
         return board;
     }
 

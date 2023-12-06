@@ -16,7 +16,8 @@ class Game2048Test {
 
     @BeforeEach
     void setUp() {
-        game2048 = new Game2048(new SquareBoard(2));
+        game2048 = new Game2048(new SquareBoard<Integer>(2));
+        game2048.getGameBoard().clearBoard();
     }
 
     @Test
@@ -110,8 +111,10 @@ class Game2048Test {
 
     @Test
     void getGameBoard() {
-        Board board = new SquareBoard(2);
-        Board notEqualBoard = new SquareBoard(3);
+        Board<Key,Integer> board = new SquareBoard<Integer>(2);
+        board.clearBoard();
+        Board<Key,Integer> notEqualBoard = new SquareBoard<Integer>(3);
+        notEqualBoard.clearBoard();
         Assertions.assertEquals(game2048.getGameBoard(), board, "Equal board test");
         Assertions.assertNotEquals(game2048.getGameBoard(), notEqualBoard, "Non equal board test");
     }

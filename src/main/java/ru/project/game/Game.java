@@ -2,7 +2,7 @@ package ru.project.game;
 
 import ru.project.board.Board;
 
-public interface Game {
+public interface Game<K, V> {
     void init();
 
     boolean canMove();
@@ -11,7 +11,7 @@ public interface Game {
 
     void addItem();
 
-    Board getGameBoard();
+    Board<K, V> getGameBoard();
 
     boolean hasWin();
 

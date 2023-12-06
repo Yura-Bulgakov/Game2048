@@ -6,12 +6,16 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SquareBoard extends Board {
+public class SquareBoard<V> extends Board<Key,V> {
 
     public SquareBoard(int size) {
         super(size, size);
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
+    }
+
+    @Override
+    public void clearBoard() {
+        for (int i = 0; i < getWidth(); i++){
+            for (int j = 0; j < getHeight(); j++) {
                 addItem(new Key(i, j), null);
             }
         }
@@ -28,7 +32,8 @@ public class SquareBoard extends Board {
     }
 
     @Override
-    public void fillBoard(List<Integer> list) {
+    public void fillBoard(List<V> list) {
+        clearBoard();
         var availableKeys = availableSpace().stream()
                 .sorted(Comparator.comparing(Key::getI).thenComparing(Key::getJ))
                 .collect(Collectors.toList());
@@ -46,7 +51,7 @@ public class SquareBoard extends Board {
     }
 
     @Override
-    public void addItem(Key key, Integer value) {
+    public void addItem(Key key, V value) {
         board.put(key, value);
     }
 
@@ -58,7 +63,7 @@ public class SquareBoard extends Board {
     }
 
     @Override
-    public Integer getValue(Key key) {
+    public V getValue(Key key) {
         return board.get(key);
     }
 
@@ -79,12 +84,12 @@ public class SquareBoard extends Board {
     }
 
     @Override
-    public boolean hasValue(Integer value) {
+    public boolean hasValue(V value) {
         return board.containsValue(value);
     }
 
     @Override
-    public List<Integer> getValues(List<Key> keys) {
+    public List<V> getValues(List<Key> keys) {
         return keys.stream()
                 .map(this::getValue)
                 .collect(Collectors.toList());
