@@ -5,8 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.project.board.Board;
 import ru.project.board.Key;
+import ru.project.board.NotEnoughSpace;
 import ru.project.board.SquareBoard;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -106,7 +107,12 @@ class Game2048Test {
 
     @Test
     void addItem() {
-        game2048.addItem();
+        try {
+            game2048.addItem();
+        } catch (NotEnoughSpace e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
         int freeSpace = game2048.getGameBoard().availableSpace().size();
         Assertions.assertEquals(3, freeSpace, "Add 1 item in game");
     }
@@ -186,17 +192,22 @@ class Game2048Test {
         game.move(Direction.LEFT);
         if (b.availableSpace().size() != 5) throw new RuntimeException("move must be add item");
         Assertions.assertEquals(b.getValues(b.getRow(0)).subList(0,2), asList(2, 8));
-        Assertions.assertEquals(b.getValues(b.getRow(1)).subList(0,2), asList(4, 16));
-        Assertions.assertEquals(b.getValues(b.getRow(2)).subList(0,2), asList(4, 2));
+        Assertions.assertEquals(b.getValues(b.getRow(1)).subList(0, 2), asList(4, 16));
+        Assertions.assertEquals(b.getValues(b.getRow(2)).subList(0, 2), asList(4, 2));
         Assertions.assertEquals(b.getValues(b.getRow(3)), asList(4, 2, 4, 2048));
         game.move(Direction.DOWN);
-        Assertions.assertEquals(b.getValues(b.getColumn(0)).subList(1,4), asList(2, 4, 8));
-        Assertions.assertEquals(b.getValues(b.getColumn(1)).subList(1,4), asList(8, 16, 4));
+        Assertions.assertEquals(b.getValues(b.getColumn(0)).subList(1, 4), asList(2, 4, 8));
+        Assertions.assertEquals(b.getValues(b.getColumn(1)).subList(1, 4), asList(8, 16, 4));
 
         game.init();
         if (b.availableSpace().size() != 14) throw new RuntimeException("init must be add 2 item");
         if (!game.canMove()) throw new RuntimeException("canMove not work =(");
-        game.addItem();
+        try {
+            game.addItem();
+        } catch (NotEnoughSpace e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
         if (b.availableSpace().size() != 13) throw new RuntimeException("addItem must be add 1 item");
     }
 

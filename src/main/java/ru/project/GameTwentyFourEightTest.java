@@ -2,6 +2,7 @@ package ru.project;
 
 import ru.project.board.Board;
 import ru.project.board.Key;
+import ru.project.board.NotEnoughSpace;
 import ru.project.board.SquareBoard;
 import ru.project.game.Direction;
 import ru.project.game.Game;
@@ -22,7 +23,6 @@ public class GameTwentyFourEightTest {
         Board<String, Double> b3 = new Board<>(1, 1) {
             @Override
             public void clearBoard() {
-
             }
 
             @Override
@@ -95,7 +95,12 @@ public class GameTwentyFourEightTest {
         game.init();
         if (b.availableSpace().size() != 14) throw new RuntimeException("init must be add 2 item");
         if (!game.canMove()) throw new RuntimeException("canMove not work =(");
-        game.addItem();
+        try {
+            game.addItem();
+        } catch (NotEnoughSpace notEnoughSpace) {
+            System.out.println(notEnoughSpace.getMessage());
+            notEnoughSpace.printStackTrace();
+        }
         if (b.availableSpace().size() != 13) throw new RuntimeException("addItem must be add 1 item");
     }
 

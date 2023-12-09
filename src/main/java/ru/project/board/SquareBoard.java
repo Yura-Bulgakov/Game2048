@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SquareBoard<V> extends Board<Key,V> {
+public class SquareBoard<V> extends Board<Key, V> {
 
     public SquareBoard(int size) {
         super(size, size);
@@ -14,10 +14,29 @@ public class SquareBoard<V> extends Board<Key,V> {
 
     @Override
     public void clearBoard() {
-        for (int i = 0; i < getWidth(); i++){
+        for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
                 addItem(new Key(i, j), null);
             }
+        }
+    }
+
+    @Override
+    public void fillBoard(List<V> list) {
+        clearBoard();
+        var availableKeys = availableSpace().stream()
+                .sorted(Comparator.comparing(Key::getI).thenComparing(Key::getJ))
+                .collect(Collectors.toList());
+        if (list.size() > availableKeys.size()) {
+            throw new RuntimeException(String.format(
+                    "Невозможно заполнить %d значений, в поле свободно %d клеток",
+                    list.size(),
+                    availableKeys.size()
+            )
+            );
+        }
+        for (int i = 0; i < availableKeys.size() && i < list.size(); i++) {
+            addItem(availableKeys.get(i), list.get(i));
         }
     }
 
@@ -29,17 +48,6 @@ public class SquareBoard<V> extends Board<Key,V> {
     @Override
     public List<List<Key>> getRows() {
         return IntStream.range(0, getHeight()).mapToObj(this::getRow).collect(Collectors.toList());
-    }
-
-    @Override
-    public void fillBoard(List<V> list) {
-        clearBoard();
-        var availableKeys = availableSpace().stream()
-                .sorted(Comparator.comparing(Key::getI).thenComparing(Key::getJ))
-                .collect(Collectors.toList());
-        for (int i = 0; i < availableKeys.size() && i < list.size(); i++) {
-            addItem(availableKeys.get(i), list.get(i));
-        }
     }
 
     @Override

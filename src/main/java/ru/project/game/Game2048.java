@@ -2,6 +2,7 @@ package ru.project.game;
 
 import ru.project.board.Board;
 import ru.project.board.Key;
+import ru.project.board.NotEnoughSpace;
 import ru.project.board.SquareBoard;
 
 import java.util.Collections;
@@ -20,6 +21,7 @@ public class Game2048 implements Game<Key, Integer> {
     public Game2048(Board<Key, Integer> board) {
         this.board = board;
     }
+
     public Game2048() {
     }
 
@@ -27,7 +29,12 @@ public class Game2048 implements Game<Key, Integer> {
     public void init() {
         board.clearBoard();
         for (int i = 0; i < INITIAL_COUNT; i++) {
-            addItem();
+            try {
+                addItem();
+            } catch (NotEnoughSpace notEnoughSpace) {
+                System.out.println(notEnoughSpace.getMessage());
+                notEnoughSpace.printStackTrace();
+            }
         }
     }
 
@@ -64,15 +71,24 @@ public class Game2048 implements Game<Key, Integer> {
                 break;
             }
         }
-        if (result){
-            addItem();
+        if (result) {
+            try {
+                addItem();
+            } catch (NotEnoughSpace notEnoughSpace) {
+                System.out.println(notEnoughSpace.getMessage());
+                notEnoughSpace.printStackTrace();
+            }
+
         }
         return result;
     }
 
     @Override
-    public void addItem() {
+    public void addItem() throws NotEnoughSpace {
         var keys = board.availableSpace();
+        if (keys.size() < 1) {
+            throw new NotEnoughSpace("На поле нет свободного места!");
+        }
         Collections.shuffle(keys);
         if (random.nextFloat() > 0.9) {
             board.addItem(keys.get(0), 4);
@@ -80,6 +96,7 @@ public class Game2048 implements Game<Key, Integer> {
             board.addItem(keys.get(0), 2);
         }
     }
+
 
     @Override
     public Board<Key,Integer> getGameBoard() {

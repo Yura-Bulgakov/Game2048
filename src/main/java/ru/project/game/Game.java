@@ -1,6 +1,7 @@
 package ru.project.game;
 
 import ru.project.board.Board;
+import ru.project.board.NotEnoughSpace;
 
 public interface Game<K, V> {
     void init();
@@ -9,7 +10,7 @@ public interface Game<K, V> {
 
     boolean move(Direction direction);
 
-    void addItem();
+    void addItem() throws NotEnoughSpace;
 
     Board<K, V> getGameBoard();
 

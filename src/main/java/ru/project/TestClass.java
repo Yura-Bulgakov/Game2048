@@ -1,6 +1,5 @@
 package ru.project;
 
-import ru.project.board.Board;
 import ru.project.board.SquareBoard;
 import ru.project.game.Game;
 import ru.project.game.Game2048;
